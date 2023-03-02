@@ -16,7 +16,7 @@ library(tidyverse)
 # move the data file.
 fullData <- read_delim("streaming-platform-data.csv")
 
-
+names <- c("Netflix", "Hulu", "Prime Video", "Disney+")
 # Define UI for application that draws a histogram
 ui <- fluidPage(
   
@@ -35,15 +35,23 @@ ui <- fluidPage(
     mainPanel(
       tabsetPanel(
         #Text, Plot, and Table are the names of the tabs
-        tabPanel("Text", textOutput("stuff")), 
-        tabPanel("Plot", plotOutput("mainplot")), 
-        tabPanel("Table", titlePanel("Movies Per Streaming Service Per Year"), dataTableOutput("table")),
+        tabPanel("Data Information", titlePanel("Info About Movies and Streaming Service Dataset"), textOutput("stuff")), 
+        tabPanel("Graph", 
+                 titlePanel("Movies Per Streaming Service Per Year"), 
+                 sidebarPanel(  
+                   checkboxGroupInput("checkGroup", label = h3("Select Streaming Services"), 
+                                      # selected(c(1:3)), choices(c(1:3))
+                                      choices = names
+                                      ,selected = names
+                   ),
+                 ), 
+                 plotOutput("mainplot")), 
+        #FOR THIS TABLE, CREATE A WIDGET BELOW THAT WILL ALLOW IT TO ONLY SHOW ONE ROW AT A TIME, AND WILL HAVE A DROP DOWN 
+        #FOR EACH MOVIE AND WILL DISPLAY THE ROW FOR THAT MOVIE
+        tabPanel("Data Table", titlePanel("Movies Per Streaming Service Per Year"), dataTableOutput("table")),
       )
-      # titlePanel("Movies Per Streaming Service Per Year")
-      # , 
-      # plotOutput("table")
-      )
-      
+    )
+    
   ) 
 )
 
@@ -52,20 +60,33 @@ server <- function(input, output) {
   output$stuff <- renderText({
     "hello"  
   })
+  
+  output$value <- renderPrint({ 
+    input$checkGroup 
+  })
+  
 
+  
   output$mainplot <- renderPlot({
-    
     # Get year from input
     year <- input$year
-    
+    selected <- input$checkGroup
+    print(input$checkGroup)
+    #NEED TO FIX ZERO ISSUE
+    # if (length(selected) == 0) {
+    #   by_service$number = 0
+    # }
     filtered_by_year <- fullData %>% 
-      filter(Year == year)
-    
-    names <- c("Netflix", "Hulu", "Prime Video", "Disney+")
-    number <- c(sum(filtered_by_year$Netflix), sum(filtered_by_year$Hulu), sum(filtered_by_year$`Prime Video`), sum(filtered_by_year$`Disney+`))
-    by_service <- data.frame(names, number)
-    by_service
-    
+      filter(Year == year) #%>% 
+    number <- c(sum(filtered_by_year$Netflix), 
+                sum(filtered_by_year$Hulu), 
+                sum(filtered_by_year$`Prime Video`), 
+                sum(filtered_by_year$`Disney+`))
+    by_service <- data.frame(names, number) %>% 
+      filter(names %in% selected)
+      print(selected)
+    cat("-- by service\n")
+    print(by_service)
     ggplot(by_service) +
       geom_col(mapping = aes(x = names, y = number, fill = factor(names))) +
       labs(title="Movies by Year",
@@ -74,12 +95,13 @@ server <- function(input, output) {
       scale_fill_manual(
         values = c("Netflix" = "red", "Hulu" = "seagreen2", "Prime Video" = "skyblue", "Disney+" = "blue")
       )
+    
+      
   })
   
   output$table <- renderDataTable({
     fullData
   })
 }
-
 # Run the application 
 shinyApp(ui = ui, server = server)
