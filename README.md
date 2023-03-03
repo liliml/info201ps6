@@ -1,3 +1,6 @@
 # info201ps6
 
 This dataset focuses on various streaming services. Specifically it focuses on Netflix, Hulu, Prime Video, and Disney+ and the movies that each of these services have available to watch, as well as the movie ratings of each movie. There are several movies in this dataset as well, with more then one thousand movies. Each tab in the web app displays different information: The first tab shows general info about this dataset, the second tab shows a bar graph that can be interacted with, and allows the user to pick a year to show the amount of movies for each streaming service that year, as well as unselect streaming services to show for that year. The third panel shows a small table of a movie, year, if the streaming services have the movies or not (1 means the streaaming service has the movie, 0 means the streaming service doesn't have the movie) as well as the movie rating and other data relating to the movie title. The user pickes a movie using the dropdown menu, and after the movie is picked, data for that movie will be shown. Finall, the fourth pannel shows all the data including movie titles, movie ratings, the year the movie is from, if streaming platforms have the movie or not, and more.
+
+website:
+https://lilianml.shinyapps.io/info201ps6/
