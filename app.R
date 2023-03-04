@@ -31,46 +31,52 @@ ui <- fluidPage(
                               "The fourth pannel shows", strong("all the data"), "including movie titles, movie ratings, the year the
                                                             movie is from, if streaming platforms have the movie or not, and more."))
       ), 
-      tabPanel("Graph", 
+      tabPanel("Graph",
                
                
-               sidebarPanel(titlePanel("Movies Per Streaming Service Per Year"), 
+               sidebarPanel(width = 6, titlePanel("Movies Per Streaming Service Per Year"), 
                             p("The bar plot below shows the amount of movies per year 
                                                 that are availiable on each streaming service. 
                                                 The slider will allow you to select a particular year to look at.
                                                 The years shown on the slider range from 1914 to 2021 which allows for
                                                 a broad selection of movies. The checkboxes displayed will also let you 
                                                 select which services to show for the selected year"), 
-                            sliderInput("year", 
-                                        "Year", 
+                            fluidRow(column(align = "center", width = 6, sliderInput("year", 
+                                        h4(strong("Year")), 
                                         min = min(fullData$Year), 
                                         max = max(fullData$Year), 
                                         min(fullData$Year),
-                                        sep = ""), 
-                            checkboxGroupInput("checkGroup", 
-                                               label = h3("Select Streaming Services"),
+                                        sep = "")), 
+                            column(width = 6, align = "center", checkboxGroupInput("checkGroup", 
+                                               label = h4(strong("Select Streaming Services")),
                                                choices = names,
-                                               selected = names), 
+                                               selected = names))
+                            )
+                            , 
                             h4(strong(uiOutput("choosenYearandServices"))), 
                             
                ),
-               mainPanel(plotOutput("mainplot"))
+               mainPanel(width = 6, plotOutput("mainplot"))
       ), 
       tabPanel("Data Table by Movie", 
-               sidebarPanel(width = "auto", 
+               
+               sidebarPanel(
                             titlePanel("Movies by Streaming Service"), 
                             p("The small table below allows you to use the drop down menu to select a movie of your choosing to see data for. 
                    The moves in the drop down menu are shown in alphabetical order. The columns show the movie's ID, the title of
                    of the movie, the year the movie was released, the age rating of the movie, the rating of the movie on Rotten Tomatoes, and 
                    if the streaming service has the movie (1 = the streaming service has the movie, 0 = the streaming service does not have 
                    the movie)"),
-                            selectInput("MovieOptions", label = h3("Movie Options"), 
+                            selectInput("MovieOptions", label = h3("Movie Options"),  
                                         choices = sort(fullData$Title), 
                                         selected = fullData[fullData$Title, 1]),
-                            h1(strong(textOutput("choosenM")))
+                            h3(strong(textOutput("choosenM")))
                ), 
                
-               dataTableOutput("table")),
+                  mainPanel(dataTableOutput("table"))
+               
+               
+               ),
       tabPanel("Data Table of All Movies, Years, and Ratings", 
                titlePanel("Movies Per Streaming Service Per Year"), 
                dataTableOutput("allData"))
