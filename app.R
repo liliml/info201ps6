@@ -10,7 +10,7 @@ names <- c("Netflix", "Hulu", "Prime Video", "Disney+")
 # Define UI for application that draws a histogram
 ui <- fluidPage(
   titlePanel("Streaming Services, Movies, and Years"), 
-  mainPanel(
+  mainPanel(width = "auto",
     tabsetPanel(
       tabPanel("Data Information", titlePanel("Info About Movies and Streaming Service Dataset"), 
                sidebarPanel(width = "auto",
