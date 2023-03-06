@@ -1,0 +1,14 @@
+name: info201ps6
+title: info201ps6
+username:
+account: lilianml
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 8467241
+bundleId: 6914171
+url: https://lilianml.shinyapps.io/info201ps6/
+when: 1677893744.43895
+lastSyncTime: 1677893744.43896
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: ps6webapp/server.R|ps6webapp/ui.R
